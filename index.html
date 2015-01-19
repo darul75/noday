@@ -1,0 +1,37 @@
+<head>	
+	
+	<!-- <link rel="stylesheet" type="text/css" href="css/ng-slider.css"> -->
+	
+	<script type="text/javascript" src="bower_components/fetch/fetch.js"></script>
+	<script type="text/javascript" src="bundle.js"></script>
+	
+</head>
+<body>
+	<script type="text/javascript">
+
+		fetch('https://api.github.com/search/repositories?q=node+created%3A%3E2014-01-01&order=asc&sort=created')
+	  .then(function(response) {
+	    return response.json();
+	  }).then(function(json) {
+	  	var items = json.items;
+	  	// https://raw.githubusercontent.com/github/fetch/master/README.md
+	  	// https://raw.githubusercontent.com/RedactedSE/Node/master/README.md
+	  	for (var i = 0; i < items.length; i++) {
+	  		var item = items[i];
+	  		var urlReadme = 'https://raw.githubusercontent.com/'+item.owner.login+'/'+item.name+'/master/README.md';
+	  		fetch(urlReadme)
+			  .then(function(response) {
+			    return response.text()
+			  }).then(function(body) {
+			    console.log(body);
+			  })
+	  		
+	  	};
+	    console.log('parsed json', json)
+	  }).catch(function(ex) {
+	    console.log('parsing failed', ex)
+	  })
+	
+	</script>
+
+</body>
