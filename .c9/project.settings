@@ -2,13 +2,13 @@
     "ace": {
         "@guessTabSize": "true",
         "@newLineMode": "unix",
-        "@tabSize": "4",
+        "@tabSize": 2,
         "@useSoftTabs": "true"
     },
     "build": {
         "@builder": "auto",
         "@path": "/.c9/builders",
-        "@saveall": "true"
+        "@saveall": true
     },
     "find.nak": {
         "@searchLimit": 100
