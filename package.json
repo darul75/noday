@@ -1,0 +1,36 @@
+{
+  "name": "node-news",
+  "description": "",
+  "version": "0.0.1",
+  "author": {
+    "name": "Julien Valéry",
+    "email": "darul75@gmail.com"
+  },
+  "homepage": "https://github.com/darul75/node-news",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darul75/node-news.git"
+  },
+  "keywords": [
+    "ip",
+    "location",
+    "geolocation",
+    "address",
+    "nodejs",
+    "telize"
+  ],
+  "engines": {
+    "node": ">=0.10.x"
+  },
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/darul75/node-news/issues"
+  },
+  "readmeFilename": "README.md",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.11.0",
+    "node-schedule": "^0.1.15",
+    "whatwg-fetch": "^0.6.1"
+  }
+}
