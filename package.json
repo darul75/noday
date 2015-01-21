@@ -30,7 +30,11 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.11.0",
+    "github": "^0.2.3",
+    "jade": "^1.9.1",
+    "markdown-parser": "0.0.2",
     "node-schedule": "^0.1.15",
-    "whatwg-fetch": "^0.6.1"
+    "queue-async": "^1.0.7",
+    "underscore": "^1.7.0"
   }
 }

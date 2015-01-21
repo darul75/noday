@@ -1,5 +1,6 @@
 var GitHubApi = require("github");
 var queue = require("queue-async");
+var parser = require('markdown-parser');
 
 function Git() {
   this.init();
@@ -7,7 +8,7 @@ function Git() {
     // required
     version: "3.0.0",
     // optional
-    debug: true,
+    debug: false,
     protocol: "https",
     /*host: "dd-darul75-1.c9.io",*/
     timeout: 5000,
@@ -41,26 +42,42 @@ Git.prototype.search = function(options, next) {
   
   function taskThatSometimesFails(repo, params) {
     return function(cb) {
-        self.github.repos.getReadme(params, function(err, result) {
-        if (err) {
+      self.github.repos.getReadme(params, function(err, result) {
+        repo.README = result;
+        
+        if (err || !repo.README || repo.README.content.length===0) {
           repo.README = "NOT DEFINED";
           return cb(null, {});
         }
-        
-        repo.README = result;
+      
+        var readme = "";
         //repo.README_UTF8 = new Buffer(repos[0].README.content, 'base64').toString();
-        
-        return cb(null, result);
+        // FETCH LINKS
+        try {
+          readme = new Buffer(repo.README.content, 'base64').toString();
+          parser.parse(readme, function(err, results) {
+            if (!err)
+              repo.README.infos = results;
+            return cb(null, result);
+          });
+        }
+        catch(e) {
+          console.log(e);
+          console.log(readme);
+          console.log(repo.full_name);
+          
+          return cb(null, result);
+        }
       });
     }
-    
   }
   
   this.github.search.repos(
     {
-      q: ['node', 'created:>2015-01-20'].join('+'),
+      q: ['node', 'in:readme,description,name', 'created:>2015-01-20'].join('+'),
       order:'desc',
-      sort:'stars'
+      sort:'stars',
+      per_page: 100
     },
     function(err, result) {
       var q = queue(1);
@@ -72,8 +89,7 @@ Git.prototype.search = function(options, next) {
         q.defer(ignoreError, fn);
       }
   
-      q.awaitAll(function(error, results) { 
-        console.log(repos[0]);
+      q.awaitAll(function(error, results) {
         return next(err, repos);
       });
       
