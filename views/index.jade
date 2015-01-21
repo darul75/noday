@@ -1,11 +1,10 @@
 html
   head
-    script(src='javascripts/components/jquery/dist/jquery.js')
     link(rel='stylesheet', href='/stylesheets/main.css')
     title!= title
   body
     #container.site-main.surface-container
-     div.surface
+     div.surface(id="repoapp")
       div.screenContent.surface-content
        div.u-foreground.v-beautifulHomepage
         div.layoutSingleColumn.layoutSingleColumn--withSidebar.u-minFullHeightControl
@@ -14,7 +13,7 @@ html
            div.block.block--inset.block--list
             div.block-firefoxPositioningContainerHack
              a(href='/davos-2015/we-need-a-new-global-response-to-pandemics-79503381a32a',class="block-image",style="background-image:url(https://d262ilb51hltx0.cloudfront.net/fit/c/140/120/1*-rtr_z2YYZmcDFDeh9IXJw.jpeg)")
-             div.block-content block-with-metadata
+             div.block-content.block-with-metadata(data-ref="repos")
                h3(class="block-title", lang="en")
                 a(href="/davos-2015/we-need-a-new-global-response-to-pandemics-79503381a32a")
                   We need a new global response to pandemics</a>
@@ -33,5 +32,9 @@ html
                 span.postMetaInline.postMetaInline--supplemental
                  p 18 hrs ago
                  span.postMetaInline.postMetaInline--bookmark
+                 
+    script(src='javascripts/components/expresso/expresso.min.js')
+    script(src='javascripts/components/fetch/fetch.js')
+    script(src='javascripts/app.js')                 
                  
         
