@@ -1,6 +1,7 @@
 var schedule = require('node-schedule');
 var git = require('./git');
 var fs = require('fs');
+var jf = require('jsonfile');
 var mkpath = require('./mkpath');
 var path = require('path');
 var _ = require('underscore');
@@ -8,11 +9,11 @@ var _ = require('underscore');
 function Fetcher() {
   this.git = git;
   this.init();
+  this.repos = {};
 }
 
 Fetcher.prototype.init = function() {
-  this.cron = new schedule.RecurrenceRule();
-  this.cron.minute = 1;
+  this.cron = '* * * * *';
   //this.cron.hour = 1;
 };
 
@@ -22,18 +23,24 @@ Fetcher.prototype.scheduleStart = function() {
 };
 
 Fetcher.prototype.fetch = function() {
+  var self = this;
+  var filepath = this.GetFilePath();
   
-  console.log("fetch called");
   
-  // Directory path
-  var d = new Date();
-  var filepath = './data'+path.sep+d.getUTCFullYear()+path.sep+d.getUTCMonth()+path.sep+d.getUTCDate()+path.sep;
-  
+  // create folders
   mkpath.sync(filepath, 0777);
   
+  // search and store
   this.git.search({}, function(err, repos) {
+    var currentRepos = self.ReadCurrent() || [];
+    var merge = merger(repos, currentRepos);
+    console.log(currentRepos.length);
+    console.log(repos.length);
+    console.log(merge.length);
     
-    fs.writeFile(filepath+'repos.json', JSON.stringify(repos, null, 4), function (err) {
+    self.repos[filepath] = merge;
+    
+    fs.writeFile(filepath+'repos.json', JSON.stringify(merge, null, 4), function (err) {
       if (err) throw err;
       console.log('It\'s saved!');
     });
@@ -42,9 +49,25 @@ Fetcher.prototype.fetch = function() {
   
 };
 
-var merger = function(c1, c2) {
-  _.uniq(_.union(c1, c2), false, function(item, key, a){ return item.a; });
-  
+Fetcher.prototype.GetFilePath = function() {
+  var d = new Date();
+  return './data'+path.sep+d.getUTCFullYear()+path.sep+d.getUTCMonth()+path.sep+d.getUTCDate()+path.sep;
+}
+
+Fetcher.prototype.ReadCurrent = function() {
+  return jf.readFileSync(this.GetFilePath()+'repos.json', {throws: false});
+}
+
+Fetcher.prototype.TodayRepos = function() {
+  if (this.repos[this.GetFilePath()]){
+    return this.repos[this.GetFilePath()];
+  }
+  return [];
+}
+
+// UTILS
+var merger = function(newOne, old) {
+  return _.uniq(_.union(newOne, old), false, function(item, key, a){ return item.id; });
 }
 
 var fetcher = new Fetcher();
