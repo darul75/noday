@@ -6,6 +6,8 @@ var mkpath = require('./mkpath');
 var path = require('path');
 var _ = require('underscore');
 
+// https://help.github.com/articles/searching-repositories/
+
 function Fetcher() {
   this.git = git;
   this.init();

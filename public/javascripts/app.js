@@ -99,6 +99,7 @@ var RepoItem = Controller.extend({
     render: function() {
         return {
             view: { classList: { editing: this.model.editing, completed: this.model.done } },
+            full_name: {text: this.model.full_name}
         }
     }
 });
