@@ -11,6 +11,37 @@ html
      div.surface(id="repoapp")
       div.screenContent.surface-content
        div.u-foreground.v-beautifulHomepage
+        div.metabar.u-clearfix.js-metabar.metabar--top.metabar--bordered.metabar--white
+         div.metabar-block.metabar-left.u-alignLeft
+          a(href="/", alt="Homepage",data-log-event="home",class="siteNav-logo siteNav-logo--wordmark")
+           span.icon.icon--logoM
+            span.icon.icon--wordmark
+         div.metabar-block.metabar-center
+          nav.navTabs.navTabs--metabar
+           ul.navTabs-list.layoutSingleColumn
+            li.navTabs-item.is-active
+             a.navTabs-anchor(href="/") Home
+            li.navTabs-item
+             a.navTabs-anchor(href="/channel/culture") Culture
+            li.navTabs-item
+             a.navTabs-anchor(href="/channel/humor") Humor
+            li.navTabs-item
+             a.navTabs-anchor(href="/channel/tech") Tech
+            li.navTabs-item
+             a.navTabs-anchor(href="/channel/design") Design
+            li.navTabs-item.u-hideOnlyOnNetbook
+             a.navTabs-anchor(href="/channel/thtm") This Happened
+            li.navTabs-item.u-hideOnlyOnNetbook
+             a.navTabs-anchor(href="/channel/imho") I.M.H.O.
+            li.navTabs-item.u-hideOnlyOnNetbook
+             a.navTabs-anchor(href="/channel/longreads") Long Reads
+            li.navTabs-item.u-showOnNetbook.u-hideOnTablet
+             button.button.button--chromeless.button--dark.navTabs-anchor(data-action="show-more-categories") More 
+              span.icon.icon--arrowDownThin
+          div.metabar-block.metabar-right.u-alignRight
+           div.buttonSet
+            a.button.u-hideOnMobile.is-inSiteNavBar(href="/p/new-post") Fork me
+        // GRID
         div.layoutSingleColumn.layoutSingleColumn--withSidebar.u-minFullHeightControl
          div.blockGroup.blockGroup--posts.blockGroup--inset.blockGroup--list
           div.blockGroup-list.layoutSingleColumn(data-ref="repos")
