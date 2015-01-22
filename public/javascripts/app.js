@@ -85,6 +85,34 @@ var ToDoItem = Controller.extend({
     }
 });
 
+var wrongImg = function(img) {
+  return img.href.indexOf('travis') >= 0 
+  || img.href.indexOf('badge') >= 0;
+}
+
+var generateImgs = function(readme) {
+  if (!readme || !readme.infos) return "";
+  var s = "";
+  var infos = readme.infos;
+  for (var i = infos.references.length; i--; ) {
+    var ref = infos.references[i];
+    if (ref.image && !wrongImg(ref))
+     s+= '<img src="' + ref.href + '" width="50">';
+  }
+  return s;
+}
+
+var generateCodes = function(readme) {
+  if (!readme || !readme.infos) return "";
+  var s = "";
+  var infos = readme.infos;
+  for (var i = infos.codes.length; i--; ) {
+    var ref = infos.codes[i];
+     s+= '<div>' + ref.code + '"</div>';
+  }
+  return s;
+}
+
 var RepoItem = Controller.extend({
     init: function() {
     },
@@ -99,7 +127,18 @@ var RepoItem = Controller.extend({
     render: function() {
         return {
             view: { classList: { editing: this.model.editing, completed: this.model.done } },
-            full_name: {text: this.model.full_name}
+            title: {text: this.model.full_name, href: this.model.html_url},
+            date: {text: moment(this.model.created_at).fromNow()},
+            description: {text: this.model.description, href: this.model.html_url, title: this.model.full_name},
+            user: {href: this.model.html_url, title: this.model.owner ? this.model.owner.login : ""},
+            user_info: {href: this.model.owner ? this.model.owner.html_url : "", text: this.model.owner ? this.model.owner.login : ""},
+            user_avatar: {src: this.model.owner ? this.model.owner.avatar_url : ""},
+            images: { html: generateImgs(this.model.README) },
+            /*codes: { html: generateCodes(this.model.README) },*/
+            watchers: { text: " " + this.model.watchers },
+            stars: { text: " " + this.model.stargazers_count },
+            forks: { text: " " + this.model.forks_count },
+            issues: { text: " " + this.model.open_issues }
         }
     }
 });
@@ -110,12 +149,25 @@ var App = Controller.extend({
         if (this.model.filter === 'active') this.filter({ target: this.ref.active });
         if (this.model.filter === 'completed') this.filter({ target: this.ref.completed });
         
-        this.todos = [ { text: 'shop' }, { text: 'code' } , { text: 'ddd' } ]
+        this.todos = []
         var self = this;
         
-        fetch('/today').then(function(response) {
-          return response.json();
-        }).then(function(json) {
+        function status(response) {
+          if (response.status >= 200 && response.status < 300) {
+            return Promise.resolve(response)
+          } else {
+            return Promise.reject(new Error(response.statusText))
+          }
+        }
+        
+        function json(response) {
+          return response.json()
+        }
+        
+        fetch('/today')
+        .then(status)
+        .then(json)
+        .then(function(json) {
           self.repos.set(json);
         }).catch(function(ex) {
           console.log('parsing failed', ex);

@@ -1,6 +1,7 @@
 html
   head
-    link(rel='stylesheet', href='/stylesheets/main.css')
+    link(href='/stylesheets/main.css', rel='stylesheet')
+    link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
     title!= title
   body
     #container.site-main.surface-container
@@ -9,31 +10,41 @@ html
        div.u-foreground.v-beautifulHomepage
         div.layoutSingleColumn.layoutSingleColumn--withSidebar.u-minFullHeightControl
          div.blockGroup.blockGroup--posts.blockGroup--inset.blockGroup--list
-          div.blockGroup-list.layoutSingleColumn
+          div.blockGroup-list.layoutSingleColumn(data-ref="repos")
+           // NEW ITEM
            div.block.block--inset.block--list
             div.block-firefoxPositioningContainerHack
-             a(href='/davos-2015/we-need-a-new-global-response-to-pandemics-79503381a32a',class="block-image",style="background-image:url(https://d262ilb51hltx0.cloudfront.net/fit/c/140/120/1*-rtr_z2YYZmcDFDeh9IXJw.jpeg)")
-             div.block-content.block-with-metadata(data-ref="repos")
-               h3(class="block-title", lang="en")
-                a(href="/davos-2015/we-need-a-new-global-response-to-pandemics-79503381a32a" data-ref="full_name")
-                  
-               a.block-snippet.block-snippet--subtitle(href="/davos-2015/we-need-a-new-global-response-to-pandemics-79503381a32a")
-               div.u-clearfix.block-postMetaWrap
-                div.block-postMeta
-                 div.postMetaInline-avatar
-                  a.link(title="Go to Davos 2015: The New Global Context", href="/davos-2015")
-                   img(src="https://d262ilb51hltx0.cloudfront.net/fit/c/40/40/1*UU0ZwXJ56VUCw0E_Rfd0AA.png", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
+             // IMAGES
+             a(class="block-image")
+              div(data-ref="images")
+             div.block-content.block-with-metadata
+              // TITLE
+              h3(class="block-title", lang="en")
+               a(data-ref="title", target="_blank")
+              // METRICS 
+              i.fa.fa-eye(data-ref="watchers", style="font-size:12px;margin:10px;")
+              i.fa.fa-star(data-ref="stars", style="font-size:12px;margin:10px;") 
+              i.fa.fa-code-fork(data-ref="forks", style="font-size:12px;margin:10px;")
+              i.fa.fa-bug(data-ref="issues", style="font-size:12px;margin:10px;")
+              // DESCRIPTION
+              a.block-snippet.block-snippet--subtitle(data-ref="description", target="_blank")
+              div.u-clearfix.block-postMetaWrap
+               div.block-postMeta
+                div.postMetaInline-avatar
+                 // USER
+                 a.link(data-ref="user", target="_blank")
+                  img(data-ref="user_avatar", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
                 div.postMetaInline-feedSummary
-                 p In 
                  a.link.link.link--accent.link--darken(title="Go to Davos 2015: The New Global Context", href="/davos-2015")
-                  p Davos 2015: The New Global Context
-                 a.link.link.link--accent.link--darken"(title="Go to the profile of World Economic Forum", href="/@wef")
-                  p World Economic Forum
-                span.postMetaInline.postMetaInline--supplemental
-                 p 18 hrs ago
-                 span.postMetaInline.postMetaInline--bookmark
-                 
+                 a.link.link.link--accent.link--darken(title="Go to the profile of World Economic Forum", href="/@wef")
+                 span.postMetaInline.postMetaInline--supplemental Author 
+                  a(data-ref="user_info", class="link link link--accent link--darken")
+                  span.postMetaInline.postMetaInline--bookmark(data-ref="date")
+              // CODE
+              // div(data-ref="codes")
     script(src='javascripts/components/expresso/expresso.min.js')
+    script(src='javascripts/components/moment/min/moment.min.js')
+    //script(src='javascripts/components/marked.js')
     script(src='javascripts/components/fetch/fetch.js')
     script(src='javascripts/app.js')                 
                  

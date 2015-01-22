@@ -9362,10 +9362,10 @@ body.is-transitioningZoomOverlay .postWrapper,body.is-showingZoomOverlay .postWr
 
 .block-image {
     display: block;
-    background-color: #f0f0f0;
+    /*background-color: #f0f0f0;
     background-position: center;
     background-origin: border-box;
-    background-size: cover
+    background-size: cover*/
 }
 
 .block-recommends {
@@ -9553,8 +9553,8 @@ body.is-transitioningZoomOverlay .postWrapper,body.is-showingZoomOverlay .postWr
     width: 140px;
     height: 120px;
     float: right;
-    margin: 2px 0 0 20px;
-    border: 1px solid rgba(0,0,0,0.05)
+    /*margin: 2px 0 0 20px;
+    border: 1px solid rgba(0,0,0,0.05)*/
 }
 
 .block--list .block-snippet {
@@ -16264,3 +16264,7 @@ body.is-diagnosticsVisible .diagnostics {
     position: relative;
     height: 65px
 }
+
+
+/** CUSTOM */
+

@@ -10,13 +10,20 @@ var _ = require('underscore');
 
 function Fetcher() {
   this.git = git;
-  this.init();
   this.repos = {};
+  this.init();
 }
 
 Fetcher.prototype.init = function() {
-  this.cron = '* * * * *';
+  this.cron = '30 * * * *';
+  // '* * * * *' every minutes
   //this.cron.hour = 1;
+  
+  // Load today repo
+  var currentDayPath = this.GetFilePath()+'repos.json';
+  if (fs.existsSync(currentDayPath) && fs.statSync(currentDayPath)) {
+    this.repos[this.GetFilePath()] = jf.readFileSync(currentDayPath, {throws: false});
+  }
 };
 
 Fetcher.prototype.scheduleStart = function() {
@@ -53,7 +60,7 @@ Fetcher.prototype.fetch = function() {
 
 Fetcher.prototype.GetFilePath = function() {
   var d = new Date();
-  return './data'+path.sep+d.getUTCFullYear()+path.sep+d.getUTCMonth()+path.sep+d.getUTCDate()+path.sep;
+  return './data/'+d.getUTCFullYear()+'/'+d.getUTCMonth()+'/'+d.getUTCDate()+'/';
 }
 
 Fetcher.prototype.ReadCurrent = function() {
