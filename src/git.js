@@ -1,6 +1,7 @@
 var GitHubApi = require("github");
 var queue = require("queue-async");
 var parser = require('markdown-parser');
+var moment = require('moment');
 
 function Git() {
   this.init();
@@ -72,9 +73,12 @@ Git.prototype.search = function(options, next) {
     }
   }
   
+  var d = new Date();
+  var queryDate = moment(d).format('YYYY-MM-DD');
+  
   this.github.search.repos(
     {
-      q: ['node', 'in:readme,description,name', 'created:>2015-01-20'].join('+'),
+      q: ['node', 'in:readme,description,name', 'created:>'+queryDate].join('+'),
       order:'desc',
       sort:'stars',
       per_page: 100

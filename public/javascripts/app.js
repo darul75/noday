@@ -108,7 +108,7 @@ var generateCodes = function(readme) {
   var infos = readme.infos;
   for (var i = infos.codes.length; i--; ) {
     var ref = infos.codes[i];
-     s+= '<div>' + ref.code + '"</div>';
+     s+= '<div>' + marked('```javascript\n'+ref.code+'```') + '"</div>';
   }
   return s;
 }
@@ -116,9 +116,11 @@ var generateCodes = function(readme) {
 var RepoItem = Controller.extend({
     init: function() {
     },
-    edit: function() {
+    code: function() {
+      this.set({ showCode: !this.model.showCode });
     },
-    destroy: function() {
+    hasNoCode: function() {
+      return !this.model.README || (this.model.README.infos && this.model.README.infos.codes.length===0);
     },
     key: function(e) {
     },
@@ -134,7 +136,9 @@ var RepoItem = Controller.extend({
             user_info: {href: this.model.owner ? this.model.owner.html_url : "", text: this.model.owner ? this.model.owner.login : ""},
             user_avatar: {src: this.model.owner ? this.model.owner.avatar_url : ""},
             images: { html: generateImgs(this.model.README) },
-            /*codes: { html: generateCodes(this.model.README) },*/
+            codes: { html: generateCodes(this.model.README), classList:{"u-hide": !this.model.showCode} },
+            code: { onclick: this.code, classList:{"u-hide": this.hasNoCode()} },
+            codeTxt: { onclick: this.code, classList:{"u-hide": this.hasNoCode()} },
             watchers: { text: " " + this.model.watchers },
             stars: { text: " " + this.model.stargazers_count },
             forks: { text: " " + this.model.forks_count },

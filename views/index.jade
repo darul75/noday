@@ -4,6 +4,9 @@ html
     link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
     title!= title
   body
+    // MODAL
+    // TODO: for code ?
+    // BODY
     #container.site-main.surface-container
      div.surface(id="repoapp")
       div.screenContent.surface-content
@@ -35,16 +38,24 @@ html
                  a.link(data-ref="user", target="_blank")
                   img(data-ref="user_avatar", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
                 div.postMetaInline-feedSummary
-                 a.link.link.link--accent.link--darken(title="Go to Davos 2015: The New Global Context", href="/davos-2015")
-                 a.link.link.link--accent.link--darken(title="Go to the profile of World Economic Forum", href="/@wef")
-                 span.postMetaInline.postMetaInline--supplemental Author 
-                  a(data-ref="user_info", class="link link link--accent link--darken")
-                  span.postMetaInline.postMetaInline--bookmark(data-ref="date")
-              // CODE
-              // div(data-ref="codes")
+                 //a.link.link.link--accent.link--darken(title="Go to Davos 2015: The New Global Context", href="/davos-2015")
+                 //a.link.link.link--accent.link--darken(title="Go to the profile of World Economic Forum", href="/@wef")
+                 // DATE
+                 div
+                  span.postMetaInline.postMetaInline--supplemental Author 
+                   a(data-ref="user_info", class="link link link--accent link--darken")
+                   span.postMetaInline.postMetaInline--bookmark(data-ref="date")
+                 // CODE
+                 div
+                   span.postMetaInline.postMetaInline--supplemental(data-ref="codeTxt") Code sample 
+                    span(data-ref="code", class="link link link--accent link--darken") samples 
+                      i.fa.fa-code
+                    span.postMetaInline.postMetaInline--bookmark
+              div(data-ref="codes", class="u-hide")
     script(src='javascripts/components/expresso/expresso.min.js')
     script(src='javascripts/components/moment/min/moment.min.js')
-    //script(src='javascripts/components/marked.js')
+    script(src='javascripts/components/marked.js')
+    script(src='javascripts/components/es6-promise/promise.min.js')
     script(src='javascripts/components/fetch/fetch.js')
     script(src='javascripts/app.js')                 
                  
