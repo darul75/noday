@@ -1,89 +1,33 @@
-// todomvc
-// https://github.com/tastejs/todomvc
+var Collection  = Espresso.Collection;
+var Controller  = Espresso.Controller;
+var Model       = Espresso.Model;
+var Repos       = Espresso.List;
+var Metrics     = Espresso.List;
 
-var Collection  = Espresso.Collection
-var Controller  = Espresso.Controller
-var List        = Espresso.List
-var Repos       = Espresso.List
-var ENTER_KEY   = 13;
-var ESC_KEY     = 27;
+// UTILS
 
-var ToDoStore = Collection.extend({
-    init: function() {
-        this.clearCompleted = this.clearCompleted.bind(this);
-        this.add = this.add.bind(this);
-        this.reset(JSON.parse(localStorage.getItem('todo')));
-        this.addListener('change', this.save.bind(this));
-    },
-    add: function(txt) {
-        this.push({ done: false, id: this.count(), text: txt })
-    },
-    toggle: function(id, done) {
-        this.set({ id: id, done: done })
-    },
-    toggleAll: function(done) {
-        this.forEach(function(v, i) {
-            if (v.done !== done) {
-                this.set(i, { done: done, text: v.text, id: v.id })
-            }
-        }.bind(this))
-    },
-    clearCompleted: function() {
-        this.set(this.active());
-    },
-    completed: function() {
-        return this.filter(function(v) { return v.done });
-    },
-    active: function() {
-        return this.filter(function(v) { return !v.done });
-    },
-    all: function() {
-        return this.toArray();
-    },
-    save: function() {
-        console.log(this.toArray())
-        localStorage.setItem('todo', JSON.stringify(this.toArray()));
-    }
-});
+function status(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response)
+  } else {
+    return Promise.reject(new Error(response.statusText))
+  }
+}
+    
+function json(response) {
+  return response.json()
+}
 
-var ToDoItem = Controller.extend({
-    init: function() {
-        this.listenTo(window, 'click', function(e) {
-            if (this.model.editing && e.target !== this.ref.input) {
-                this.set({ editing: false });
-            }
-        });
-    },
-    edit: function() {
-        this.ref.input.focus();
-        this.set({ editing: true });
-    },
-    destroy: function() {
-        store.remove({ id: this.model.id });
-    },
-    key: function(e) {
-        if (e.which === ENTER_KEY) {
-            this.set({ editing: false });
-            store.set({ id: this.model.id, text: e.target.value });
-        }
-        else if (e.which === ESC_KEY) {
-            this.set({ editing: false });
-            e.target.value = this.model.text;
-        }
-    },
-    toggle: function(e) {
-        store.toggle(this.model.id, e.target.checked);
-    },
-    render: function() {
-        return {
-            view: { classList: { editing: this.model.editing, completed: this.model.done } },
-            label: { ondblclick: this.edit, text: this.model.text },
-            destroy: { onclick: this.destroy },
-            input: { value: this.model.text, onkeydown: this.key },
-            toggle: { onclick: this.toggle, checked: this.model.done }
-        }
-    }
-});
+var fetcher = function(path, cache, model) {
+  var self = this;
+  fetch(path).then(status).then(json)
+    .then(function(json) {
+      self[cache] = json;
+      self[model].set(self[cache]);
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+    });
+};
 
 var wrongImg = function(img) {
   return img.href.indexOf('travis') >= 0 
@@ -113,103 +57,151 @@ var generateCodes = function(readme) {
   return s;
 }
 
+
+// APP
+
 var RepoItem = Controller.extend({
-    init: function() {
-    },
-    code: function() {
-      this.set({ showCode: !this.model.showCode });
-    },
-    hasNoCode: function() {
-      return !this.model.README || (this.model.README.infos && this.model.README.infos.codes.length===0);
-    },
-    key: function(e) {
-    },
-    toggle: function(e) {
-    },
-    render: function() {
-        return {
-            view: { classList: { editing: this.model.editing, completed: this.model.done } },
-            title: {text: this.model.full_name, href: this.model.html_url},
-            date: {text: moment(this.model.created_at).fromNow()},
-            description: {text: this.model.description, href: this.model.html_url, title: this.model.full_name},
-            user: {href: this.model.html_url, title: this.model.owner ? this.model.owner.login : ""},
-            user_info: {href: this.model.owner ? this.model.owner.html_url : "", text: this.model.owner ? this.model.owner.login : ""},
-            user_avatar: {src: this.model.owner ? this.model.owner.avatar_url : ""},
-            images: { html: generateImgs(this.model.README) },
-            codes: { html: generateCodes(this.model.README), classList:{"u-hide": !this.model.showCode} },
-            code: { onclick: this.code, classList:{"u-hide": this.hasNoCode()} },
-            codeTxt: { onclick: this.code, classList:{"u-hide": this.hasNoCode()} },
-            watchers: { text: " " + this.model.watchers },
-            stars: { text: " " + this.model.stargazers_count },
-            forks: { text: " " + this.model.forks_count },
-            issues: { text: " " + this.model.open_issues }
-        }
+  init: function() {
+    this.modalCtrl = this.include(modalCtrl);
+  },
+  hasNoCode: function() {
+    return !this.model.README || this.model.README === 'NOT DEFINED' || (this.model.README.infos && this.model.README.infos.codes.length===0);
+  },
+  clickCode: function(e) {
+    if (!e || !e.srcElement) return;
+    var code = generateCodes(this.model.README);
+    this.modalCtrl.emit('modalCode', code);
+  },
+  clickImg: function(e) {
+    if (!e || !e.srcElement) return;
+    var imgSrc = e.srcElement.src;
+    this.modalCtrl.emit('modalImg', imgSrc);
+  },
+  render: function() {
+    return {
+      view: { classList: { editing: this.model.editing, completed: this.model.done } },
+      title: {text: this.model.full_name, href: this.model.html_url},
+      date: {text: moment(this.model.created_at).fromNow()},
+      description: {text: this.model.description, href: this.model.html_url, title: this.model.full_name},
+      language: {text: this.model.language},
+      user: {href: this.model.html_url, title: this.model.owner ? this.model.owner.login : ""},
+      user_info: {href: this.model.owner ? this.model.owner.html_url : "", text: this.model.owner ? this.model.owner.login : ""},
+      user_avatar: {src: this.model.owner ? this.model.owner.avatar_url : ""},
+      images: { html: generateImgs(this.model.README), onclick: this.clickImg },
+      codeTxt: { onclick: this.clickCode, classList:{"u-hide": this.hasNoCode()} },
+      watchers: { text: " " + this.model.watchers },
+      stars: { text: " " + this.model.stargazers_count },
+      forks: { text: " " + this.model.forks_count },
+      issues: { text: " " + this.model.open_issues }
     }
+  }
 });
+
+var Metrics = Controller.extend({
+  init: function() {
+    this.model = new Model({ 
+      nextInvocation: null,
+      prevInvocation: null
+    });
+    this.metrics = {};
+    
+  },
+  render: function() {
+    return {
+      next: {text: this.model.nextInvocation},
+      prev: {text: this.model.prevInvocation}
+    }
+  }
+});
+
+var metricsCtrl = new Metrics({ view: 'metrics', name: 'metrics' });
+
+var ModalCtrl = Controller.extend({
+  init: function() {
+    this.model.content='';
+    this.addListener('modalCode', function(code) {
+      this.set({ show: true, content:code });
+      window.location.hash = '#modal';
+    });
+    this.addListener('modalImg', function(src) {
+      this.set({ show: true, content:'<img src='+src+'>' });
+      window.location.hash = '#modal';
+    });
+  },
+  show: function() {
+    this.set({ showCode: !this.model.showCode });
+  },
+  render: function() {
+    return {
+      view: { classList: { "modal--show": this.model.show } },
+      content: { html: this.model.content }
+    }
+  }
+});
+
+var modalCtrl = new ModalCtrl({ view: 'modal', name: 'modalComponent' });
 
 var App = Controller.extend({
-    init: function() {
-        this.model.filter = window.location.hash.replace('#/', '') || 'all';
-        if (this.model.filter === 'active') this.filter({ target: this.ref.active });
-        if (this.model.filter === 'completed') this.filter({ target: this.ref.completed });
-        
-        this.todos = []
-        var self = this;
-        
-        function status(response) {
-          if (response.status >= 200 && response.status < 300) {
-            return Promise.resolve(response)
-          } else {
-            return Promise.reject(new Error(response.statusText))
-          }
-        }
-        
-        function json(response) {
-          return response.json()
-        }
-        
-        fetch('/today')
-        .then(status)
-        .then(json)
-        .then(function(json) {
-          self.repos.set(json);
-        }).catch(function(ex) {
-          console.log('parsing failed', ex);
-        })
-
-        this.list = new List(ToDoItem);
-        this.repos = new Repos(RepoItem);
-        this.listenTo(store, 'change', this.render);
-    },
-    filter: function(e) {
-        if (e === undefined) return 
-        if (e.target.nodeName === 'A') {
-            document.querySelector('a.selected').classList.remove('selected');
-            e.target.classList.add('selected')
-            this.model.set({ filter: e.target.innerHTML.toLowerCase() })
-        }
-    },
-    addItem: function(e) {
-        if (e.which !== ENTER_KEY) return;
-        store.add(this.ref.newItem.value)
-        this.ref.newItem.value = '';
-    },
-    toggleAll: function(e) {
-        store.toggleAll(e.target.checked);
-    },
-    clearText: function() {
-        var x = store.completed().length;
-        return 'Clear completed (' + x + ')'
-    },
-    render: function() {
-        return {
-            repos: this.repos.set(this.todos)
-        }
+  init: function() {
+    this.items = [];
+    var metrics = {};
+    this.order = true;
+    var self = this;
+    
+    function locationHashChanged(e) {
+      var h = location.hash;
+      if (h === "#stars"){
+        self.sort("stargazers_count");
+      }
+      else if (h === "#watchers"){
+        self.sort("watchers");
+      }
+      else if (h === "#forks"){
+        self.sort("forks_count");
+      }
+      else if (h === "#issues"){
+        self.sort("open_issues");
+      }
+      else if (h === "#watchers"){
+        self.sort("watchers");
+      }
     }
+
+    window.onhashchange = locationHashChanged;
+    
+
+    this.repos = new Repos(RepoItem);
+    this.modal = this.include(modalCtrl);
+    this.metrics = this.include(metricsCtrl);
+    
+    fetcher.apply(this, ['/repositories', 'items', 'repos']);
+    //fetcher.apply(this, ['/metrics', 'metrics', 'metrics']);
+    
+     fetch('/metrics').then(status).then(json)
+      .then(function(json) {
+        metrics = json;
+        self.metrics.model.set(metrics);
+      }).catch(function(ex) {
+        console.log('parsing failed', ex);
+      });
+    
+  },
+  sort: function(type) {
+    this.items.sort(function (a, b) {
+      return a[type] < b[type] ? 1 : -1;
+    });
+    
+    this.order = !this.order;
+    this.repos.set(this.items);
+  },
+  render: function() {
+    return {
+        repos: this.repos.set(this.todos),
+        modal: this.modal,
+        metrics: this.metrics
+    }
+  }
 });
 
-var store = new ToDoStore([
-  // { id: 0, text: 'write todomvc', done: false }
-]);
 
 window.app = new App({ view: document.getElementById('repoapp') });

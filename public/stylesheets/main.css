@@ -228,7 +228,7 @@ td,th {
 }
 
 body {
-    font-family: "jaf-bernino-sans","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    font-family: "Lucida Sans",Geneva,Verdana,sans-serif;
     letter-spacing: -0.02em;
     font-weight: 400;
     font-style: normal;
@@ -242,7 +242,7 @@ body {
 }
 
 h1,h2,h3,h4 {
-    font-family: "jaf-bernino-sans","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    font-family: "Lucida Sans",Geneva,Verdana,sans-serif;
     letter-spacing: -0.02em;
     font-weight: 700;
     font-style: normal
@@ -1911,10 +1911,6 @@ figcaption {
 
 .icon--unlisted:before {
     content: "\f171"
-}
-
-.icon--wordmark:before {
-    content: "\f172"
 }
 
 .icon--break:before {
@@ -6041,6 +6037,13 @@ section.is-darkBackgrounded {
     animation: scale-fade 300ms
 }
 
+.metabar .buttonSet, .metabar .metabar-text, .metabar-block>.button {
+  margin: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
 .metabar-shareActions .button>.icon--heartThin:before {
     font-size: 32px;
     top: -1px;
@@ -8088,53 +8091,8 @@ body.is-diagnosticsVisible .site-main {
     padding-bottom: 50px
 }
 
-.siteNav-logo {
-    position: relative;
-    display: inline-block;
-    top: 10px;
-    left: 10px;
-    width: 44px;
-    height: 44px;
-    z-index: 700;
-    background-color: rgba(0,0,0,0);
-    text-align: center;
-    border: 0;
-    opacity: 1;
-    -webkit-transition: opacity 200ms linear;
-    transition: opacity 200ms linear;
-    margin-right: 16px
-}
-
-.siteNav-logo>.icon {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0
-}
-
-.siteNav-logo--wordmark>.icon--wordmark:before {
-    color: #333332;
-    display: inline-block;
-    height: 60px;
-    line-height: 128px;
-    overflow: hidden;
-    font-size: 92px;
-    margin-left: 35px;
-    margin-top: -7.5px;
-    padding-left: 1px;
-    padding-right: 1px
-}
-
 body.browser-ie .icon--wordmark:before {
     line-height: 134px
-}
-
-.siteNav-logo>.icon--logoM:before {
-    color: #333332;
-    font-size: 27px;
-    line-height: 48px
 }
 
 .metabar--light:not(.metabar--affixed) .icon--logoM:before {
@@ -16267,6 +16225,41 @@ body.is-diagnosticsVisible .diagnostics {
 
 
 /** CUSTOM */
+.metrics {
+  float: right;
+  right: 10px;
+  top: 50px;
+  position: relative;
+}
 
+.logo {
+  line-height: 37px;
+  margin: 10px;
+  display: inline-block;
+  letter-spacing: .1em;
+  position: relative;
+  font-weight: 700;
+  font-size: 15px;
+  height: 38px;
+  padding: 0 16px;
+  outline: 0;
+  color: rgba(0, 0, 0, 1);
+  font-size: 50px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: 100ms background-color,100ms border-color,100ms color;
+  transition: 100ms background-color,100ms border-color,100ms color;
+  font-family: "jaf-bernino-sans","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
+}
 
 

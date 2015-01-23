@@ -6,8 +6,12 @@ app.get('/', function (req, res) {
   res.render('index', { title: 'Hey', message: 'Hello there!'});
 })
 
-app.get('/today', function (req, res) {
+app.get('/repositories', function (req, res) {
   res.json(fetcher.TodayRepos());
+})
+
+app.get('/metrics', function (req, res) {
+  res.json(fetcher.Metrics());
 })
 
 app.get('/top', function (req, res) {

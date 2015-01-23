@@ -1,49 +1,57 @@
 html
   head
     link(href='/stylesheets/main.css', rel='stylesheet')
+    link(href='/stylesheets/modal.css', rel='stylesheet')
     link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
     title!= title
   body
-    // MODAL
-    // TODO: for code ?
     // BODY
     #container.site-main.surface-container
+     // APP
      div.surface(id="repoapp")
       div.screenContent.surface-content
        div.u-foreground.v-beautifulHomepage
+        // BAR
         div.metabar.u-clearfix.js-metabar.metabar--top.metabar--bordered.metabar--white
          div.metabar-block.metabar-left.u-alignLeft
-          a(href="/", alt="Homepage",data-log-event="home",class="siteNav-logo siteNav-logo--wordmark")
-           span.icon.icon--logoM
-            span.icon.icon--wordmark
+          // ICON
+          a(href="/", alt="Homepage",data-log-event="home")
+            span.logo N
          div.metabar-block.metabar-center
           nav.navTabs.navTabs--metabar
            ul.navTabs-list.layoutSingleColumn
             li.navTabs-item.is-active
              a.navTabs-anchor(href="/") Home
             li.navTabs-item
-             a.navTabs-anchor(href="/channel/culture") Culture
+             a.navTabs-anchor(href="#stars") Stars
             li.navTabs-item
-             a.navTabs-anchor(href="/channel/humor") Humor
+             a.navTabs-anchor(href="#watchers") Watchers
             li.navTabs-item
-             a.navTabs-anchor(href="/channel/tech") Tech
+             a.navTabs-anchor(href="#forks") Forks
             li.navTabs-item
-             a.navTabs-anchor(href="/channel/design") Design
-            li.navTabs-item.u-hideOnlyOnNetbook
-             a.navTabs-anchor(href="/channel/thtm") This Happened
-            li.navTabs-item.u-hideOnlyOnNetbook
-             a.navTabs-anchor(href="/channel/imho") I.M.H.O.
-            li.navTabs-item.u-hideOnlyOnNetbook
-             a.navTabs-anchor(href="/channel/longreads") Long Reads
+             a.navTabs-anchor(href="#issues") Issues
+            //li.navTabs-item.u-hideOnlyOnNetbook
+            // a.navTabs-anchor(href="/channel/thtm") This Happened
+            
             li.navTabs-item.u-showOnNetbook.u-hideOnTablet
              button.button.button--chromeless.button--dark.navTabs-anchor(data-action="show-more-categories") More 
               span.icon.icon--arrowDownThin
-          div.metabar-block.metabar-right.u-alignRight
-           div.buttonSet
-            a.button.u-hideOnMobile.is-inSiteNavBar(href="/p/new-post") Fork me
+         div.metabar-block.metabar-right.u-alignRight
+          div.buttonSet
+           a.button.u-hideOnMobile.is-inSiteNavBar(href="/p/new-post") Fork me
         // GRID
         div.layoutSingleColumn.layoutSingleColumn--withSidebar.u-minFullHeightControl
          div.blockGroup.blockGroup--posts.blockGroup--inset.blockGroup--list
+          // METRICS
+          #metrics.metrics
+           div(data-ref="metrics")
+            div
+             span.postMetaInline.postMetaInline--supplemental Last server synchro 
+              a.link.link.link--accent.link--darken(data-ref="prev", href="/")
+            div
+             span.postMetaInline.postMetaInline--supplemental Next server synchro 
+              a.link.link.link--accent.link--darken(data-ref="next", href="/")
+          // REPOS
           div.blockGroup-list.layoutSingleColumn(data-ref="repos")
            // NEW ITEM
            div.block.block--inset.block--list
@@ -69,24 +77,32 @@ html
                  a.link(data-ref="user", target="_blank")
                   img(data-ref="user_avatar", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
                 div.postMetaInline-feedSummary
-                 //a.link.link.link--accent.link--darken(title="Go to Davos 2015: The New Global Context", href="/davos-2015")
-                 //a.link.link.link--accent.link--darken(title="Go to the profile of World Economic Forum", href="/@wef")
                  // DATE
                  div
                   span.postMetaInline.postMetaInline--supplemental Author 
                    a(data-ref="user_info", class="link link link--accent link--darken")
                    span.postMetaInline.postMetaInline--bookmark(data-ref="date")
+                 // LANGUAGE
+                 div
+                  span.postMetaInline.postMetaInline--supplemental Language 
+                   span.postMetaInline.postMetaInline--bookmark(data-ref="language")  
                  // CODE
                  div
-                   span.postMetaInline.postMetaInline--supplemental(data-ref="codeTxt") Code sample 
-                    span(data-ref="code", class="link link link--accent link--darken") samples 
+                   span.postMetaInline.postMetaInline--supplemental(data-ref="codeTxt") Code  
+                    span(class="link link link--accent link--darken") samples 
                       i.fa.fa-code
                     span.postMetaInline.postMetaInline--bookmark
-              div(data-ref="codes", class="u-hide")
+      // MODAL
+      section.modal--show(id="modal",tabindex="-1",role="dialog",aria-labelledby="modal-label",aria-hidden="true", data-ref="modal")
+       div.modal-inner
+        header(id="modal-label")
+          div.modal-content(data-ref="content")
+        footer
+       a(href="#!",class="modal-close",title="Close this modal",data-close="Close", data-dismiss="modal") ?
+    script(src='javascripts/components/underscore/underscore-min.js')   
     script(src='javascripts/components/expresso/expresso.min.js')
     script(src='javascripts/components/moment/min/moment.min.js')
     script(src='javascripts/components/marked.js')
-    script(src='javascripts/components/es6-promise/promise.min.js')
     script(src='javascripts/components/fetch/fetch.js')
     script(src='javascripts/app.js')                 
                  
