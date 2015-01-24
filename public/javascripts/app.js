@@ -44,7 +44,7 @@ var generateImgs = function(readme) {
   for (var i = infos.references.length; i--; ) {
     var ref = infos.references[i];
     if (ref.image && !wrongImg(ref))
-     s+= '<img src="' + ref.href + '" width="50">';
+     s+= '<img src="' + ref.href + '" width="50" class="link">';
   }
   return s;
 }
