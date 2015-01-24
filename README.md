@@ -1,4 +1,5 @@
-# noday
+noday [![Total views](https://sourcegraph.com/api/repos/github.com/darul75/noday/counters/views.png)](https://sourcegraph.com/github.com/darul75/noday)
+=====================
 
 NodeJS every day.
 
