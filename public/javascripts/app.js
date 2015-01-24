@@ -168,8 +168,7 @@ var App = Controller.extend({
       {href: '#stars', text: 'Stars'},
       {href: '#watchers', text: 'Watchers'},
       {href: '#forks', text: 'Forks'},
-      {href: '#issues', text: 'Issues'},
-      {href: '#watchers', text: 'Watchers'}
+      {href: '#issues', text: 'Issues'}
     ];
     var metrics = {};
     this.order = true;

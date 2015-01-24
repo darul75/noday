@@ -212,15 +212,18 @@ button,input,optgroup,select,textarea {
     position: absolute;
     box-shadow: none;
   }
-  
-  
 }
-
 
 // LAYOUT
 .layoutSingleColumn {
   width: 700px;
   margin: 0 auto
+}
+
+@media only screen and (min-width : 1224px) {
+  .layoutSingleColumn {
+    width: 1000px;
+  }
 }
 
 .layoutSingleColumn--withSidebar {
@@ -752,6 +755,10 @@ button,input,optgroup,select,textarea {
 }
 
 // CUSTOM
+.modal-content {
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
 .metrics {
   float: right;
   right: 10px;

@@ -217,6 +217,11 @@ textarea {
   width: 700px;
   margin: 0 auto;
 }
+@media only screen and (min-width: 1224px) {
+  .layoutSingleColumn {
+    width: 1000px;
+  }
+}
 .layoutSingleColumn--withSidebar {
   width: auto;
   padding-left: 10px;
@@ -652,6 +657,9 @@ textarea {
 .link--darken:active,
 .link--darken:focus {
   text-decoration: none;
+}
+.modal-content {
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 .metrics {
   float: right;
