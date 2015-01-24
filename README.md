@@ -25,7 +25,7 @@ How
 Graphic
 -----
 
-[team](www.medium.com) ;)
+[team](https://medium.com/) ;)
 
 Time
 -----
