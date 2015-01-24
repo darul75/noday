@@ -1,8 +1,7 @@
 var Collection  = Espresso.Collection;
 var Controller  = Espresso.Controller;
 var Model       = Espresso.Model;
-var Repos       = Espresso.List;
-var Metrics     = Espresso.List;
+var List        = Espresso.List;
 
 // UTILS
 
@@ -57,8 +56,24 @@ var generateCodes = function(readme) {
   return s;
 }
 
+// EXPRESSO.JS
 
-// APP
+// MENU
+var MenuItem = Controller.extend({
+  init: function() {},
+  clickAnchor: function(e) {
+    // TODO : is-active class on parent li
+  },
+  render: function() {
+    return {
+      anchor: {
+        html: this.model.text, 
+        href: this.model.href,
+        onclick: this.clickAnchor
+      }
+    }
+  }
+});
 
 var RepoItem = Controller.extend({
   init: function() {
@@ -97,14 +112,11 @@ var RepoItem = Controller.extend({
   }
 });
 
+// METRICS
 var Metrics = Controller.extend({
   init: function() {
-    this.model = new Model({ 
-      nextInvocation: null,
-      prevInvocation: null
-    });
+    this.model = new Model({ nextInvocation: '', prevInvocation: ''});
     this.metrics = {};
-    
   },
   render: function() {
     return {
@@ -116,6 +128,7 @@ var Metrics = Controller.extend({
 
 var metricsCtrl = new Metrics({ view: 'metrics', name: 'metrics' });
 
+// MODAL
 var ModalCtrl = Controller.extend({
   init: function() {
     this.model.content='';
@@ -141,15 +154,28 @@ var ModalCtrl = Controller.extend({
 
 var modalCtrl = new ModalCtrl({ view: 'modal', name: 'modalComponent' });
 
+// APP
 var App = Controller.extend({
   init: function() {
     this.items = [];
+    this.menus = [
+      {href: '/', text: 'Home'},
+      {href: '#date', text: 'Date'},
+      {href: '#stars', text: 'Stars'},
+      {href: '#watchers', text: 'Watchers'},
+      {href: '#forks', text: 'Forks'},
+      {href: '#issues', text: 'Issues'},
+      {href: '#watchers', text: 'Watchers'}
+    ];
     var metrics = {};
     this.order = true;
     var self = this;
     
     function locationHashChanged(e) {
-      var h = location.hash;
+      var h = self.h = location.hash;
+      if (h === "#date"){
+        self.sort("created_at");
+      }
       if (h === "#stars"){
         self.sort("stargazers_count");
       }
@@ -169,21 +195,21 @@ var App = Controller.extend({
 
     window.onhashchange = locationHashChanged;
     
-
-    this.repos = new Repos(RepoItem);
+    this.repos = new List(RepoItem);
+    this.menusList = new List(MenuItem);
     this.modal = this.include(modalCtrl);
     this.metrics = this.include(metricsCtrl);
     
     fetcher.apply(this, ['/repositories', 'items', 'repos']);
-    //fetcher.apply(this, ['/metrics', 'metrics', 'metrics']);
     
-     fetch('/metrics').then(status).then(json)
+    // TODO refactoring
+    fetch('/metrics').then(status).then(json)
       .then(function(json) {
         metrics = json;
         self.metrics.model.set(metrics);
       }).catch(function(ex) {
         console.log('parsing failed', ex);
-      });
+    });
     
   },
   sort: function(type) {
@@ -196,12 +222,12 @@ var App = Controller.extend({
   },
   render: function() {
     return {
-        repos: this.repos.set(this.todos),
-        modal: this.modal,
-        metrics: this.metrics
+      menus: this.menusList.set(this.menus),
+      repos: this.repos.set(this.todos),
+      modal: this.modal,
+      metrics: this.metrics
     }
   }
 });
-
 
 window.app = new App({ view: document.getElementById('repoapp') });

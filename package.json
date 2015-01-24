@@ -1,6 +1,6 @@
 {
-  "name": "node-news",
-  "description": "",
+  "name": "noday",
+  "description": "NodeJS today new repositories.",
   "version": "0.0.1",
   "author": {
     "name": "Julien Valéry",
@@ -12,17 +12,18 @@
     "url": "https://github.com/darul75/node-news.git"
   },
   "keywords": [
-    "ip",
-    "location",
-    "geolocation",
-    "address",
-    "nodejs",
-    "telize"
+    "github",
+    "javascripts",
+    "news",
+    "nodejs"
   ],
   "engines": {
     "node": ">=0.10.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.6.4"
+  },
   "bugs": {
     "url": "https://github.com/darul75/node-news/issues"
   },

@@ -6,92 +6,86 @@ html
     title!= title
   body
     // BODY
-    #container.site-main.surface-container
+    #container.site-main
      // APP
      div.surface(id="repoapp")
-      div.screenContent.surface-content
-       div.u-foreground.v-beautifulHomepage
+      div.screen-content
+       div.u-foreground
         // BAR
-        div.metabar.u-clearfix.js-metabar.metabar--top.metabar--bordered.metabar--white
-         div.metabar-block.metabar-left.u-alignLeft
+        div.metabar.u-clearfix.metabar--top.metabar--bordered.metabar--white
+         div.metabar-block.u-alignLeft
           // ICON
           a(href="/", alt="Homepage",data-log-event="home")
-            span.logo N
+            span.logo NODAY
          div.metabar-block.metabar-center
           nav.navTabs.navTabs--metabar
-           ul.navTabs-list.layoutSingleColumn
-            li.navTabs-item.is-active
-             a.navTabs-anchor(href="/") Home
+           ul.navTabs-list.layoutSingleColumn(data-ref='menus')
             li.navTabs-item
-             a.navTabs-anchor(href="#stars") Stars
-            li.navTabs-item
-             a.navTabs-anchor(href="#watchers") Watchers
-            li.navTabs-item
-             a.navTabs-anchor(href="#forks") Forks
-            li.navTabs-item
-             a.navTabs-anchor(href="#issues") Issues
-            //li.navTabs-item.u-hideOnlyOnNetbook
-            // a.navTabs-anchor(href="/channel/thtm") This Happened
-            
-            li.navTabs-item.u-showOnNetbook.u-hideOnTablet
-             button.button.button--chromeless.button--dark.navTabs-anchor(data-action="show-more-categories") More 
-              span.icon.icon--arrowDownThin
-         div.metabar-block.metabar-right.u-alignRight
+             a.navTabs-anchor(data-ref="anchor")
+            //li.navTabs-item.u-showOnNetbook.u-hideOnTablet
+            // button.button.navTabs-anchor(data-action="show-more-categories") More 
+            //  span.icon.icon--arrowDownThin
+         div.metabar-block.u-alignRight
           div.buttonSet
-           a.button.u-hideOnMobile.is-inSiteNavBar(href="/p/new-post") Fork me
+           a.button(href="/p/new-post") Fork me
         // GRID
         div.layoutSingleColumn.layoutSingleColumn--withSidebar.u-minFullHeightControl
-         div.blockGroup.blockGroup--posts.blockGroup--inset.blockGroup--list
-          // METRICS
-          #metrics.metrics
-           div(data-ref="metrics")
-            div
-             span.postMetaInline.postMetaInline--supplemental Last server synchro 
-              a.link.link.link--accent.link--darken(data-ref="prev", href="/")
-            div
-             span.postMetaInline.postMetaInline--supplemental Next server synchro 
-              a.link.link.link--accent.link--darken(data-ref="next", href="/")
-          // REPOS
-          div.blockGroup-list.layoutSingleColumn(data-ref="repos")
-           // NEW ITEM
-           div.block.block--inset.block--list
-            div.block-firefoxPositioningContainerHack
-             // IMAGES
-             a(class="block-image")
-              div(data-ref="images")
-             div.block-content.block-with-metadata
-              // TITLE
-              h3(class="block-title", lang="en")
-               a(data-ref="title", target="_blank")
-              // METRICS 
-              i.fa.fa-eye(data-ref="watchers", style="font-size:12px;margin:10px;")
-              i.fa.fa-star(data-ref="stars", style="font-size:12px;margin:10px;") 
-              i.fa.fa-code-fork(data-ref="forks", style="font-size:12px;margin:10px;")
-              i.fa.fa-bug(data-ref="issues", style="font-size:12px;margin:10px;")
-              // DESCRIPTION
-              a.block-snippet.block-snippet--subtitle(data-ref="description", target="_blank")
-              div.u-clearfix.block-postMetaWrap
-               div.block-postMeta
-                div.postMetaInline-avatar
-                 // USER
-                 a.link(data-ref="user", target="_blank")
-                  img(data-ref="user_avatar", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
-                div.postMetaInline-feedSummary
-                 // DATE
-                 div
-                  span.postMetaInline.postMetaInline--supplemental Author 
-                   a(data-ref="user_info", class="link link link--accent link--darken")
-                   span.postMetaInline.postMetaInline--bookmark(data-ref="date")
-                 // LANGUAGE
-                 div
-                  span.postMetaInline.postMetaInline--supplemental Language 
-                   span.postMetaInline.postMetaInline--bookmark(data-ref="language")  
-                 // CODE
-                 div
-                   span.postMetaInline.postMetaInline--supplemental(data-ref="codeTxt") Code  
-                    span(class="link link link--accent link--darken") samples 
-                      i.fa.fa-code
-                    span.postMetaInline.postMetaInline--bookmark
+         div.blockGroup-list.layoutSingleColumn
+          div.blockGroup
+           // METRICS
+           #metrics.metrics(style="visibility:hidden; display:none;")
+            div(data-ref="metrics")
+             div
+              span.postMetaInline.postMetaInline--supplemental Last server synchro 
+               a.link.link.link--accent.link--darken(data-ref="prev")
+             div
+              span.postMetaInline.postMetaInline--supplemental Next server synchro 
+               a.link.link.link--accent.link--darken(data-ref="next")
+           // REPOS
+           div.layoutSingleColumn(data-ref="repos")
+            // NEW ITEM
+            div.block.block--inset.block--list
+             div
+              // IMAGES
+              a(class="block-image")
+               div(data-ref="images")
+              div.block-content
+               // TITLE
+               h3(class="block-title", lang="en")
+                a(data-ref="title", target="_blank")
+               // METRICS 
+               i.fa.fa-eye(data-ref="watchers", style="font-size:12px;margin:10px;")
+               i.fa.fa-star(data-ref="stars", style="font-size:12px;margin:10px;") 
+               i.fa.fa-code-fork(data-ref="forks", style="font-size:12px;margin:10px;")
+               i.fa.fa-bug(data-ref="issues", style="font-size:12px;margin:10px;")
+               // DESCRIPTION
+               div
+                a.block-snippet(data-ref="description", target="_blank")
+               div.u-clearfix.block-postMetaWrap
+                div.block-postMeta
+                 div.postMetaInline-avatar
+                  // AVATAR
+                  a.link(data-ref="user", target="_blank")
+                   img(data-ref="user_avatar", class="avatar-image avatar-image--small avatar-image--roundedRectangle", alt="Davos 2015: The New Global Context")
+                 div.postMetaInline-feedSummary
+                  // AUTHOR
+                  div
+                   span.postMetaInline.postMetaInline--supplemental Author 
+                    a(data-ref="user_info", class="link link link--accent link--darken")
+                  // DATE
+                  div
+                   span.postMetaInline.postMetaInline--supplemental Time 
+                    span.postMetaInline.postMetaInline--bookmark(data-ref="date")
+                  // LANGUAGE
+                  div
+                   span.postMetaInline.postMetaInline--supplemental Language 
+                    span.postMetaInline.postMetaInline--bookmark(data-ref="language")  
+                  // CODE
+                  div
+                    span.postMetaInline.postMetaInline--supplemental(data-ref="codeTxt") Code  
+                     span(class="link link link--accent link--darken") samples 
+                       i.fa.fa-code
+                     span.postMetaInline.postMetaInline--bookmark
       // MODAL
       section.modal--show(id="modal",tabindex="-1",role="dialog",aria-labelledby="modal-label",aria-hidden="true", data-ref="modal")
        div.modal-inner
