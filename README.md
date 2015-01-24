@@ -2,7 +2,7 @@
 
 NodeJS every day.
 
-Fetching new dayly repositories and exposing it for you to discover, give you new ideas or pportunities.
+Fetching new daily repositories and exposing it for you to discover, give you new ideas or pportunities.
 
 How
 -----
