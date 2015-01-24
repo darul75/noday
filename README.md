@@ -2,7 +2,9 @@
 
 NodeJS every day.
 
-Fetching new daily repositories and exposing it for you to discover, give you new ideas or pportunities.
+Noday simply search new daily repositories and list them. 
+
+At the end I hope it will give to you new ideas or opportunities like it does for me.
 
 How
 -----
@@ -17,11 +19,12 @@ How
  - [node-jsonfile](https://github.com/jprichardson/node-jsonfile)
 
 - Espresso.js Client
-  - [espresso.js](https://github.com/techlayer/espresso.js) : take me a while to learn it but when you know _ it is fine.
+  - [espresso.js](https://github.com/techlayer/espresso.js) : it has taken me a while to learn it but when you know _ it is fine.
 
 Graphic
 -----
-Because Medium is clean and because I love it, I have fetch most of CSS, sorry for that, thank you all medium [team](www.medium.com) ;)
+
+[team](www.medium.com) ;)
 
 Time
 -----
@@ -29,5 +32,9 @@ About one week of work.
 
 Todo
 -----
-- [ ] real time client updates, certainly with socket.io
+
+- [ ] bug fixes
+- [ ] ideas
+- [ ] css, media queries...
+- [ ] real time client updates, socket.io
 - [ ] emailing
