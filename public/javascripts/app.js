@@ -22,6 +22,10 @@ var fetcher = function(path, cache, model) {
   fetch(path).then(status).then(json)
     .then(function(json) {
       self[cache] = json;
+      // DO SORT SOMEWHERE ELSE
+      json.sort(function (a, b) {
+        return a['created_at'] < b['created_at'] ? 1 : -1;
+      });
       self[model].set(self[cache]);
     }).catch(function(ex) {
       console.log('parsing failed', ex);

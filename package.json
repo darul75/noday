@@ -6,10 +6,10 @@
     "name": "Julien Valéry",
     "email": "darul75@gmail.com"
   },
-  "homepage": "https://github.com/darul75/node-news",
+  "homepage": "https://github.com/darul75/noday",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darul75/node-news.git"
+    "url": "https://github.com/darul75/noday.git"
   },
   "keywords": [
     "github",
@@ -22,10 +22,12 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-less": "~0.6.4"
+    "grunt-contrib-less": "~0.6.4",
+    "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-uglify": "~0.2.0"
   },
   "bugs": {
-    "url": "https://github.com/darul75/node-news/issues"
+    "url": "https://github.com/darul75/noday/issues"
   },
   "readmeFilename": "README.md",
   "license": "MIT",

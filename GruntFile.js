@@ -14,18 +14,37 @@ module.exports = function (grunt) {
         files: {
           'public/stylesheets/main.css': 'public/stylesheets/main.less'
         }
+      }
+    },
+    // MINIFY CSS
+    cssmin: {
+      options: {
+        keepSpecialComments: false
       },
-      production: {
-        options: {
-          paths: ['public/javascripts/bootstrap/less/', 'public/stylesheets/less/'],
-          yuicompress: true
-        },
+      compress: {
         files: {
-          'public/javascripts/bootstrap/css/bootstrap.css': 'public/javascripts/bootstrap/less/bootstrap.less',
-          'public/stylesheets/css/style.css': 'public/stylesheets/less/style.less'
+          // core
+          'public/stylesheets/main.min.css': [
+          'public/stylesheets/main.css'
+          ]
+
         }
       }
-    }
+    },
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %>  */\n',
+        // mangle: false,
+        // banner: '/*! <%= pkg.name %> BUILD <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        comments: false,
+        // beautify: true
+      },
+      app: {
+         files: {
+          'public/javascripts/app.min.js': ['public/javascripts/app.js'],
+        }
+      }
+    },
   });
 
   // Module checker
@@ -33,10 +52,16 @@ module.exports = function (grunt) {
 
   // Load the plugin that provides the "less" task.
   grunt.loadNpmTasks('grunt-contrib-less');
+  
+   // Load the plugin that provides the "uglify" task.
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // Load the plugin that provides the "cssmin" task.
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // TASKS
 
   // DEFAULT TEST ENVIRONMENT
-  grunt.registerTask('default', ['less:development']);
+  grunt.registerTask('default', ['less:development', 'cssmin', 'uglify:app']);
 
 };
