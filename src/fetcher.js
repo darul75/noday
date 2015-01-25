@@ -6,6 +6,7 @@ var mkpath = require('./mkpath');
 var moment = require('moment');
 var path = require('path');
 var _ = require('underscore');
+var MongoClient = require('mongodb').MongoClient;
 
 // https://help.github.com/articles/searching-repositories/
 
@@ -28,20 +29,43 @@ function Fetcher() {
   this.repos = {};
   this.cached = false;
   this.nextInvocation = null;
-  this.init();
+  var self = this;
+  // mongo : mongodb://darul:darul@ds037451.mongolab.com:37451/heroku_app33476082
+  MongoClient.connect('mongodb://darul:darul@ds037451.mongolab.com:37451/heroku_app33476082', function(err, db) {
+    console.log("Connected correctly to server");
+    self.mongoRepos = db.collection('repositories');
+    //db.close();
+    self.init();
+  });
+  
 }
 
 Fetcher.prototype.init = function() {
-  this.cron = '*/5 * * * *';
+  this.cron = '* * * * *';
+  //this.cron = '*/5 * * * *';
   // '* * * * *' every minutes
   //this.cron.hour = 1;
   
   // Load today repo
-  var currentDayPath = this.GetFilePath()+'repos.json';
+  var filepath = this.GetFilePath();
+  var currentDayPath = filepath+'repos.json';
   if (fs.existsSync(currentDayPath) && fs.statSync(currentDayPath)) {
-    this.repos[this.GetFilePath()] = filter(jf.readFileSync(currentDayPath, {throws: false}), cachedFields);
+    var storedOne = filter(jf.readFileSync(currentDayPath, {throws: false}), cachedFields);
+    this.repos[filepath] = storedOne;
+    if (storedOne == null || storedOne.length == 0) {
+      this.repos[filepath] = this.client.get(filepath) || [];  
+    }
     this.cached = true;
   }
+  
+  this.mongoRepos.find({date: filepath}, function(err, repos) {
+    if (err) console.log(err);
+    this.repos[filepath] = repos || [];
+    console.log(repos);
+    console.log(this.repos[filepath].length);
+  });
+  
+  this.scheduleStart();
 };
 
 Fetcher.prototype.scheduleStart = function() {
@@ -66,6 +90,12 @@ Fetcher.prototype.fetch = function() {
     console.log(merge.length);
     
     self.repos[filepath] = filter(merge, cachedFields);
+    // Insert some documents
+    var doc = { date: filepath, repos: self.repos[filepath] };
+    self.mongoRepos.insert(doc, function(err, result) {
+      if (err) console.log(err);        
+      console.log('inserted');
+    });
     
     fs.writeFile(filepath+'repos.json', JSON.stringify(merge, null, 4), function (err) {
       if (err) throw err;

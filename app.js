@@ -185,4 +185,4 @@ app.use(express.static(__dirname + '/public'));
 app.listen(process.env.PORT);
 console.log('Express server started on port %s', process.env.PORT);
 
-fetcher.scheduleStart();
+//fetcher.scheduleStart();

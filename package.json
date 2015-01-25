@@ -39,6 +39,7 @@
     "jsonfile": "^2.0.0",
     "markdown-parser": "0.0.4",
     "moment": "^2.9.0",
+    "mongodb": "^1.4.29",
     "node-schedule": "^0.1.15",
     "queue-async": "^1.0.7",
     "underscore": "^1.7.0"
