@@ -32,7 +32,7 @@ function Fetcher() {
 }
 
 Fetcher.prototype.init = function() {
-  this.cron = '30 * * * *';
+  this.cron = '5 * * * *';
   // '* * * * *' every minutes
   //this.cron.hour = 1;
   
