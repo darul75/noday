@@ -18,6 +18,9 @@ How
  - [moment](https://github.com/moment/moment)
  - [markdown-parser](https://github.com/darul75/markdown-parser)
  - [node-jsonfile](https://github.com/jprichardson/node-jsonfile)
+ - [node-mongodb-native](https://github.com/mongodb/node-mongodb-native)
+
+Data are stored by default in FS and MongoDB.
 
 - Espresso.js Client
   - [espresso.js](https://github.com/techlayer/espresso.js) : it has taken me a while to learn it but when you know [Backbone](http://backbonejs.org/) it is fine.
