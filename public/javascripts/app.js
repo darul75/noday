@@ -214,6 +214,18 @@ var App = Controller.extend({
         console.log('parsing failed', ex);
     });
     
+    // socket
+    if (io) {
+      this.socket = io.connect();
+      this.socket.on('connect', function () {});
+      this.socket.on('repos', function (repos) {
+        repos.sort(function (a, b) {
+          return a['created_at'] < b['created_at'] ? 1 : -1;
+        });
+        self.items = repos;
+        self.repos.set(repos);
+      });
+    }
   },
   sort: function(type) {
     this.items.sort(function (a, b) {

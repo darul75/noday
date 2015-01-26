@@ -1,7 +1,7 @@
 {
   "name": "noday",
   "description": "NodeJS today new repositories.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "Julien Valéry",
     "email": "darul75@gmail.com"
@@ -13,7 +13,7 @@
   },
   "keywords": [
     "github",
-    "javascripts",
+    "javascript",
     "news",
     "nodejs"
   ],
@@ -42,6 +42,7 @@
     "mongodb": "^1.4.29",
     "node-schedule": "^0.1.15",
     "queue-async": "^1.0.7",
+    "socket.io": "^1.3.2",
     "underscore": "^1.7.0"
   }
 }

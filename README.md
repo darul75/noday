@@ -37,5 +37,5 @@ Todo
 - [ ] bug fixes
 - [ ] ideas
 - [ ] css, media queries...
-- [ ] real time client updates, socket.io
+- [x] real time client updates, socket.io, small implementation
 - [ ] emailing

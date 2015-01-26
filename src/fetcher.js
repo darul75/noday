@@ -12,7 +12,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 var cachedFields = ['id','name', 'full_name', 'owner', 'html_url', 'description','created_at','language','watchers','README','stargazers_count','forks_count','open_issues'];
 
-function Fetcher() {
+function Fetcher(io) {
+  this.io = io;
   this.git = git;
   this.cached = false;
   this.nextInvocation = null;
@@ -25,7 +26,6 @@ function Fetcher() {
       db.close();
       self.init();
     });
-    
   });
 }
 
@@ -50,6 +50,12 @@ Fetcher.prototype.init = function() {
     var merged = merger(doc.repos, self.repos[filepath]);
     self.repos[filepath] = filter(merged, cachedFields);
     console.log(self.repos[filepath].length);
+  });
+  
+  // broadcast client
+  this.currentSockNsp = this.io.on('connection', function(socket){
+    console.log('someone connected');
+    socket.emit('repos', self.repos[filepath]);
   });
   
   this.scheduleStart();
@@ -90,9 +96,8 @@ Fetcher.prototype.fetch = function() {
       self.prevInvocation = new Date();
       self.nextInvocation = self.scheduler.nextInvocation();
     });
-    
+    self.currentSockNsp.emit('repos', self.repos[filepath]);
   });
-  
 };
 
 Fetcher.prototype.storeRepos = function(doc, cb) {
@@ -157,5 +162,4 @@ var merger = function(newOne, old) {
   return merge;
 };
 
-var fetcher = new Fetcher();
-module.exports = fetcher;
+module.exports = Fetcher;
