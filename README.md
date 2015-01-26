@@ -20,7 +20,7 @@ How
  - [node-jsonfile](https://github.com/jprichardson/node-jsonfile)
 
 - Espresso.js Client
-  - [espresso.js](https://github.com/techlayer/espresso.js) : it has taken me a while to learn it but when you know _ it is fine.
+  - [espresso.js](https://github.com/techlayer/espresso.js) : it has taken me a while to learn it but when you know [Backbone](http://backbonejs.org/) it is fine.
 
 Graphic
 -----

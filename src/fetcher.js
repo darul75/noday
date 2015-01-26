@@ -10,59 +10,46 @@ var MongoClient = require('mongodb').MongoClient;
 
 // https://help.github.com/articles/searching-repositories/
 
-var cachedFields = [
-  'name', 
-  'full_name', 
-  'owner', 
-  'html_url', 
-  'description',
-  'created_at',
-  'language',
-  'watchers',
-  'README',
-  'stargazers_count',
-  'forks_count',
-  'open_issues'];
+var cachedFields = ['id','name', 'full_name', 'owner', 'html_url', 'description','created_at','language','watchers','README','stargazers_count','forks_count','open_issues'];
 
 function Fetcher() {
   this.git = git;
-  this.repos = {};
   this.cached = false;
   this.nextInvocation = null;
+  this.mongoUrl = 'mongodb://darul:darul@ds037451.mongolab.com:37451/heroku_app33476082';
   var self = this;
-  // mongo : mongodb://darul:darul@ds037451.mongolab.com:37451/heroku_app33476082
-  MongoClient.connect('mongodb://darul:darul@ds037451.mongolab.com:37451/heroku_app33476082', function(err, db) {
+  MongoClient.connect(this.mongoUrl, function(err, db) {
     console.log("Connected correctly to server");
-    self.mongoRepos = db.collection('repositories');
-    //db.close();
-    self.init();
+    // 2 Mo
+    self.mongoRepos = db.createCollection('repositories', {capped:true, size:2097152},function(err, collection) {
+      db.close();
+      self.init();
+    });
+    
   });
-  
 }
 
 Fetcher.prototype.init = function() {
-  this.cron = '* * * * *';
+  var self = this;
+  this.cron = '*/30 * * * *';
   //this.cron = '*/5 * * * *';
-  // '* * * * *' every minutes
-  //this.cron.hour = 1;
   
-  // Load today repo
+  // 1) Stored in files (sync)
   var filepath = this.GetFilePath();
+  this.repos = {filepath: []};
   var currentDayPath = filepath+'repos.json';
   if (fs.existsSync(currentDayPath) && fs.statSync(currentDayPath)) {
-    var storedOne = filter(jf.readFileSync(currentDayPath, {throws: false}), cachedFields);
+    var storedOne = jf.readFileSync(currentDayPath, {throws: false});
     this.repos[filepath] = storedOne;
-    if (storedOne == null || storedOne.length == 0) {
-      this.repos[filepath] = this.client.get(filepath) || [];  
-    }
-    this.cached = true;
   }
-  
-  this.mongoRepos.find({date: filepath}, function(err, repos) {
-    if (err) console.log(err);
-    this.repos[filepath] = repos || [];
-    console.log(repos);
-    console.log(this.repos[filepath].length);
+  // 2) Stored in mongo (async)
+  this.GetStoredRepos({key: filepath}, function(err, doc) {
+    if (err) {console.log(err);return;}
+    if (doc == null) return;
+    console.log(doc.repos.length);
+    var merged = merger(doc.repos, self.repos[filepath]);
+    self.repos[filepath] = filter(merged, cachedFields);
+    console.log(self.repos[filepath].length);
   });
   
   this.scheduleStart();
@@ -91,16 +78,15 @@ Fetcher.prototype.fetch = function() {
     
     self.repos[filepath] = filter(merge, cachedFields);
     // Insert some documents
-    var doc = { date: filepath, repos: self.repos[filepath] };
-    self.mongoRepos.insert(doc, function(err, result) {
-      if (err) console.log(err);        
+    var doc = { key: filepath, repos: merge };
+    self.storeRepos(doc, function(err, result) {
+      if (err) {console.log(err);return;}
       console.log('inserted');
     });
     
     fs.writeFile(filepath+'repos.json', JSON.stringify(merge, null, 4), function (err) {
       if (err) throw err;
       console.log('It\'s saved!');
-      self.cached = true;
       self.prevInvocation = new Date();
       self.nextInvocation = self.scheduler.nextInvocation();
     });
@@ -108,6 +94,30 @@ Fetcher.prototype.fetch = function() {
   });
   
 };
+
+Fetcher.prototype.storeRepos = function(doc, cb) {
+  MongoClient.connect(this.mongoUrl, function(err, db) {
+    if (err) {cb(err);return;}
+    var collection = db.collection('repositories');
+    collection.insert(doc, function(err, result) {
+      if (err) {cb(err);return;}
+      cb(null, result);
+      db.close();
+    });
+  });
+}
+
+Fetcher.prototype.GetStoredRepos = function(query, cb) {
+  MongoClient.connect(this.mongoUrl, function(err, db) {
+    if (err) {cb(err);return;}
+    var collection = db.collection('repositories');
+    collection.findOne(query, function(err, doc) {
+      if (err) {cb(err);return;}
+      cb(null, doc);
+      db.close();
+    });
+  });
+}
 
 Fetcher.prototype.GetFilePath = function() {
   var d = new Date();
@@ -126,16 +136,12 @@ Fetcher.prototype.Metrics = function() {
 }
 
 Fetcher.prototype.TodayRepos = function() {
-  if (this.cached) {
-    return this.repos[this.GetFilePath()];
-  }
-  return [];
+  return this.repos[this.GetFilePath()];
 }
 
 // UTILS
 
 var filter = function(objects, fields) {
-  console.log(fields);
   var newOne = _.map(objects, function(value, key, list){ 
     return _.pick(value, fields);
   });
@@ -144,7 +150,11 @@ var filter = function(objects, fields) {
 };
 
 var merger = function(newOne, old) {
-  return _.uniq(_.union(newOne, old), false, function(item, key, a){ return item.id; });
+  var union = _.union(newOne, old);
+  var merge = _.uniq(union, false, function(item, key, a){ 
+    return item.id;
+  });
+  return merge;
 };
 
 var fetcher = new Fetcher();
