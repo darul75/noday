@@ -31,7 +31,7 @@ function Fetcher(io) {
 
 Fetcher.prototype.init = function() {
   var self = this;
-  this.cron = '*/30 * * * *';
+  this.cron = '*/10 * * * *';
   //this.cron = '*/5 * * * *';
   
   // 1) Stored in files (sync)

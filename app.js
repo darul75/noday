@@ -7,7 +7,7 @@ var Fetcher = require('./src/fetcher');
 var fetcher = new Fetcher(io);
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Hey', message: 'Hello there!'});
+  res.render('index');
 })
 
 app.get('/repositories', function (req, res) {

@@ -1,6 +1,6 @@
 var GitHubApi = require("github");
 var queue = require("queue-async");
-var parser = require('markdown-parser');
+var Parser = require('markdown-parser');
 var moment = require('moment');
 
 function Git() {
@@ -56,7 +56,7 @@ Git.prototype.search = function(options, next) {
         // FETCH LINKS
         try {
           readme = new Buffer(repo.README.content, 'base64').toString();
-          parser.parse(readme, function(err, results) {
+          new Parser(repo.html_url).parse(readme, function(err, results) {
             if (!err)
               repo.README.infos = results;
             return cb(null, result);
