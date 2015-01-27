@@ -24,10 +24,7 @@ module.exports = function (grunt) {
       compress: {
         files: {
           // core
-          'public/stylesheets/main.min.css': [
-          'public/stylesheets/main.css'
-          ]
-
+          'public/stylesheets/main.min.css': ['public/stylesheets/main.css','public/stylesheets/modal.css']
         }
       }
     },
