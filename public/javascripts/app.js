@@ -7,14 +7,14 @@ var List        = Espresso.List;
 
 function status(response) {
   if (response.status >= 200 && response.status < 300) {
-    return Promise.resolve(response)
+    return Promise.resolve(response);
   } else {
-    return Promise.reject(new Error(response.statusText))
+    return Promise.reject(new Error(response.statusText));
   }
 }
     
 function json(response) {
-  return response.json()
+  return response.json();
 }
 
 var fetcher = function(path, cache, model) {
@@ -86,6 +86,9 @@ var RepoItem = Controller.extend({
   hasNoCode: function() {
     return !this.model.README || this.model.README === 'NOT DEFINED' || (this.model.README.infos && this.model.README.infos.codes.length===0);
   },
+  hasNoLanguage: function() {
+    return !this.model.language || this.model.language === '';
+  },
   clickCode: function(e) {
     if (!e || !e.srcElement) return;
     var code = generateCodes(this.model.README);
@@ -102,7 +105,7 @@ var RepoItem = Controller.extend({
       title: {text: this.model.full_name, href: this.model.html_url},
       date: {text: moment(this.model.created_at).fromNow()},
       description: {text: this.model.description, href: this.model.html_url, title: this.model.full_name},
-      language: {text: this.model.language},
+      language: {text: 'Language ' + this.model.language, classList:{"u-hide": this.hasNoLanguage()}},
       user: {href: this.model.html_url, title: this.model.owner ? this.model.owner.login : ""},
       user_info: {href: this.model.owner ? this.model.owner.html_url : "", text: this.model.owner ? this.model.owner.login : ""},
       user_avatar: {src: this.model.owner ? this.model.owner.avatar_url : ""},

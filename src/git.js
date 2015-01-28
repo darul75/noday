@@ -24,6 +24,7 @@ function Git() {
     secret: "3d87d1742501421e62704301d3733dc4745c834d"
   });
   
+  this.parser = new Parser();
 }
 
 Git.prototype.init = function() {
@@ -56,7 +57,8 @@ Git.prototype.search = function(options, next) {
         // FETCH LINKS
         try {
           readme = new Buffer(repo.README.content, 'base64').toString();
-          new Parser(repo.html_url).parse(readme, function(err, results) {
+          self.parser.options = {html_url: repo.html_url};
+          self.parser.parse(readme, function(err, results) {
             if (!err)
               repo.README.infos = results;
             return cb(null, result);
