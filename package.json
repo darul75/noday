@@ -37,7 +37,7 @@
     "github": "^0.2.3",
     "jade": "^1.9.1",
     "jsonfile": "^2.0.0",
-    "markdown-parser": "0.0.6",
+    "markdown-parser": "0.0.7",
     "moment": "^2.9.0",
     "mongodb": "^1.4.29",
     "node-schedule": "^0.1.15",
