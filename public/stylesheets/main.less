@@ -579,6 +579,18 @@ button,input,optgroup,select,textarea {
   background-position: -404px -17px;
 }
 
+#particles {
+  display: block;
+  position: fixed;
+  right: 60px;
+  top: 200px;
+  width: 180px;
+  height: 73px;
+  margin: 0px 0px;
+  background-image: url(../imgs/ticles.png);
+  background-position: -168px -1px;
+}
+
 // UTILS
 .u-hide {
   display: none !important;
@@ -678,7 +690,7 @@ button,input,optgroup,select,textarea {
 
   .navTabs--metabar .navTabs-anchor {
       padding: 10px 0;
-      font-size: 13px;
+      font-size: 11px;
   }
 }
 
@@ -719,6 +731,9 @@ button,input,optgroup,select,textarea {
 }
 
 @media (max-width: 500px) {
+  #particles {
+    display: none;
+  }
   .button {
     line-height: 27px;
     padding: 1px 10px;
