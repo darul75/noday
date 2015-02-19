@@ -80,7 +80,7 @@ Git.prototype.search = function(options, next) {
   
   this.github.search.repos(
     {
-      q: ['node', 'in:readme,description,name', 'created:>'+queryDate].join('+'),
+      q: ['nodejs', 'in:readme,description,name', 'created:>'+queryDate].join('+'),
       order:'desc',
       sort:'stars',
       per_page: 100

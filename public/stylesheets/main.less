@@ -189,7 +189,7 @@ button,input,optgroup,select,textarea {
 .layoutSingleColumn--withSidebar {
   width: auto;
   padding-left: 10px;    
-  padding-top: 75px;
+  padding-top: 95px;
   padding-bottom: 40px
 }
 
@@ -347,7 +347,7 @@ button,input,optgroup,select,textarea {
     font-weight: 700;
     font-style: normal;
     display: inline-block;
-    font-size: 11px;
+    font-size: 16px;
     text-transform: uppercase;
     letter-spacing: .2em;
     color: rgba(0,0,0,0.3);
@@ -395,7 +395,7 @@ button,input,optgroup,select,textarea {
 .navTabs--metabar {
     border-top: 0;
     text-align: left;
-    margin-right: 400px;
+    margin-right: 292px;
     border-top: none
 }
 
@@ -406,10 +406,10 @@ button,input,optgroup,select,textarea {
 }
 
 .navTabs--metabar .navTabs-anchor {
-    color: rgba(0,0,0,0.6);
+    color: rgba(0,0,0,.6);
     font-weight: 400;
     letter-spacing: .1em;
-    padding: 31px 0 19px
+    padding: 24px 0 19px;
 }
 
 .navTabs--metabar .navTabs-anchor:hover {
@@ -570,36 +570,13 @@ button,input,optgroup,select,textarea {
   position: relative;
 }
 
-// http://cssrex.com/projects/textshadow/
 .logo {
-  font-family: Arial;
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
-  line-height: 37px;
-  margin: 10px;
-  display: inline-block;
-  letter-spacing: .1em;
-  position: relative;
-  font-weight: 700;
-  font-size: 15px;
-  height: 38px;
-  padding: 0 16px;
-  outline: 0;
-  color: rgba(0, 0, 0, 1);
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: 100ms background-color,100ms border-color,100ms color;
-  transition: 100ms background-color,100ms border-color,100ms color;
-  font-family: "jaf-bernino-sans","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
-  font-style: normal;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -moz-font-feature-settings: "liga" on;
+  display: block;
+  width: 61px;
+  height: 45px;
+  margin: 10px 47px;
+  background-image: url(../imgs/logo.png);
+  background-position: -404px -17px;
 }
 
 // UTILS
@@ -700,7 +677,8 @@ button,input,optgroup,select,textarea {
   }
 
   .navTabs--metabar .navTabs-anchor {
-      padding: 10px 0
+      padding: 10px 0;
+      font-size: 13px;
   }
 }
 
@@ -714,7 +692,7 @@ button,input,optgroup,select,textarea {
     margin-right: 20px;
   }
   .logo {
-    margin-left: 3px;
+    margin: 5px 15px;
   }
   .metabar {
     position: absolute;
@@ -793,6 +771,7 @@ button,input,optgroup,select,textarea {
   }
   
   .navTabs-anchor {
+    font-size: 11px;
     padding: 18px 0;
     letter-spacing: .1em;
   }
